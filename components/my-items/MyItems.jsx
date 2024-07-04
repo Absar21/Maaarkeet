@@ -102,6 +102,8 @@ import { ethers } from "ethers";
 import { nftMarketplaceAddress } from "../../config/networkAddress";
 import axios from "axios";
 import NFTMarketplaceAbi from '../../abi/NFTMarketplace.json'
+import NFTAbi from '../../abi/NFT.json'
+
 import Card from "../../subcomponents/cards/Card";
 import Link from 'next/link';
 import Loading from "../../subcomponents/loading/Loading";
@@ -137,22 +139,33 @@ export default function MyItems() {
 
         const allItems = await Promise.all(
           data.map(async (i, index) => {
-            let convertedPrice = ethers.utils.formatUnits(i.price.toString(), "ether");
-            const tokenUri = await nftContract.tokenURI(i.tokenId);
-            const metaData = await axios.get(tokenUri);
-            let item = {
-              price: convertedPrice,
-              tokenId: i.tokenId.toNumber(),
-              seller: i.seller,
-              owner: i.owner,
-              image: metaData.data.image,
-              name: metaData.data.name,
-              description: metaData.data.description,
-              position: index, // Add position to identify the index
-            };
-            return item;
+            console.log("iii",i)
+            try{
+              const nftContract = new ethers.Contract(i.nftContract, NFTAbi, signer);
+          
+              let convertedPrice = ethers.utils.formatUnits(i.price.toString(), "ether");
+              const tokenUri = await nftContract.tokenURI(i.tokenId);
+              const metaData = await axios.get(tokenUri);
+              console.log("metaData",metaData.data)
+              let item = {
+                contract:i.nftContract,
+                price: convertedPrice,
+                tokenId: i.tokenId.toNumber(),
+                seller: i.seller,
+                owner: i.owner,
+                image: metaData.data.image,
+                name: metaData.data.name,
+                description: metaData.data.description,
+                position: index, // Add position to identify the index
+              };
+              // console.log("item",item)
+              return item;}catch{
+                console.log("error")
+              }
+
           })
         );
+        console.log("allItems",allItems)
 
         setAllNFTs(allItems);
       } else {
@@ -186,7 +199,7 @@ export default function MyItems() {
                 <Card
                   nft={nft}
                   url="/my-items/"
-                  onClick={() => buyNFT(nft)}
+                  // onClick={() => buyNFT(nft)}
                 />
               </div>
             ))

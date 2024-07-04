@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <MainLayout>
       
-            <Heading2 title="Dashboard" />
+            <Heading2 title="NFTs for sale" />
 
       <AllNFTs />
     </MainLayout>

@@ -174,7 +174,6 @@ export default function SellerItems() {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 
-        const nftContract = new ethers.Contract(nftMarketplaceAddress, NFTMarketplaceAbi, signer);
         const nftMarketPlaceContract = new ethers.Contract(nftMarketplaceAddress, NFTMarketplaceAbi, signer);
 
         const data = await nftMarketPlaceContract.getSellerListedItems();
@@ -186,13 +185,17 @@ export default function SellerItems() {
           setLoading(false);
           return;
         }
-
+        let nftContract;
         const allItems = await Promise.all(
           data.map(async (i) => {
+            console.log('iiii',i);
+            nftContract = new ethers.Contract(i.contract, NFTMarketplaceAbi, signer);
+
             let convertedPrice = ethers.utils.formatUnits(i.price.toString(), "ether");
             const tokenUri = await nftContract.tokenURI(i.tokenId);
             const metaData = await axios.get(tokenUri);
             let item = {
+              contract:nftContract,
               price: convertedPrice,
               sold: i.sold,
               tokenId: i.tokenId.toNumber(),
@@ -235,7 +238,7 @@ export default function SellerItems() {
       console.log(listedNFTs);
     };
     load();
-  }, []);
+  }, [listedNFTs]);
 
   return (
     <div>
@@ -278,7 +281,7 @@ export default function SellerItems() {
                       nft={nft}
                       url="/my-listed-items/"
                       onClick={() => {
-                        buyNFT(nft);
+                        // buyNFT(nft);
                         console.log("Clicked on buy button.");
                       }}
                     />

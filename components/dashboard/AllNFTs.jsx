@@ -41,13 +41,13 @@ export default function AllNFTs() {
       }
       let nftContract;
       const allItems = await Promise.all(
-        data.map(async (i,index) => {
+        data.map(async (i) => {
           try {
             nftContract = new ethers.Contract(i.nftContract, NFTAbi, provider);
             let convertedPrice = ethers.utils.formatUnits(i.price.toString(), "ether");
             const tokenUri = await nftContract.tokenURI(i.tokenId);
             const metaData = await axios.get(tokenUri);
-            console.log("iiii",index,i)
+            console.log("iiii",i)
             if (!metaData || !metaData.data) {
               console.warn("Invalid metadata for token ID:", i.tokenId);
               return null;
@@ -65,6 +65,7 @@ export default function AllNFTs() {
               image: metaData.data.image,
               name: metaData.data.name,
               description: metaData.data.description,
+              itemId:i.itemId.toString()
             };
   
             return item;
@@ -99,12 +100,11 @@ export default function AllNFTs() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {allNFTs.map((nft,index) => (
                 <div className="bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-                  {/* {""+nft.description} */}
                   <Card
                     nft={nft}
-                    url={`/${index}/`}
+                    url={`/${nft.itemId}/`}
                     onClick={() => {
-                      router.push(`/${index}/${nft.contract}/${nft.tokenId}`);
+                      router.push(`${nft.contract}/${nft.tokenId}`);
                       console.log("Clicked on NFT card.");
                     }}
                   />

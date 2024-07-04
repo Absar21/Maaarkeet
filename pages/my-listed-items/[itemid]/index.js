@@ -21,22 +21,25 @@ export default function ListedNFTItemId() {
   const loadNFT = async () => {
     setLoading(true);
     const provider = new ethers.providers.JsonRpcProvider();
-    const nftContract = new ethers.Contract(nftAddress, NFTAbi.abi, provider);
+    
     const nftMarketPlaceContract = new ethers.Contract(
       nftMarketplaceAddress,
-      NFTMarketplaceAbi.abi,
+      NFTMarketplaceAbi,
       provider
     );
     const data = await nftMarketPlaceContract.getPerticularItem(
       router.query.itemid
     );
-    console.log(data);
+    console.log("data",data);
 
+
+    let nftContract = new ethers.Contract(nftAddress, NFTAbi.abi, provider);
     const allData = async () => {
       let convertedPrice = ethers.utils.formatUnits(
         data.price.toString(),
         "ether"
       );
+      
       const tokenUri = await nftContract.tokenURI(data.tokenId);
       const metaData = await axios.get(tokenUri);
       let item = {

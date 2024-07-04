@@ -9,17 +9,61 @@ import {
 } from "react-icons/ai";
 import BtnMain from "../../subcomponents/btns/BtnMain";
 import Image from "next/image"; // Importing Next.js Image component
+import { ethers } from "ethers";
 
 export default function Navbar() {
   const router = useRouter();
   const [isMobileNavOpen, setisMobileNavOpen] = useState(false);
-
-  const handleClick = () => {
-    router.push("/sell");
-    if (isMobileNavOpen) {
-      setisMobileNavOpen(false);
-    }
-  };
+  const [walletadddress, setwalletadddress]=useState(null);
+  const handleClick = async () => {
+      if (!window.ethereum) {
+        alert("MetaMask is not installed. Please install it to use this app.");
+        return;
+      }
+    
+      try {
+        // Switch to Sepolia network
+        // await window.ethereum.request({
+        //   method: 'wallet_addEthereumChain',
+        //   params: [{
+        //     chainId: '0xAA36A7', // Chain ID for Sepolia
+        //     chainName: 'Sepolia Test Network',
+        //     nativeCurrency: {
+        //       name: 'Sepolia',
+        //       symbol: 'ETH',
+        //       decimals: 18
+        //     },
+        //     rpcUrls: ['https://sepolia.infura.io/v3'], // Replace with your Infura project ID
+        //     blockExplorerUrls: ['https://sepolia.etherscan.io']
+        //   }]
+        // });
+    
+        // Request account access if needed
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0xaa36a7' }], // Chain ID for Sepolia
+        });
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+    
+        // We use ethers to interact with the Ethereum blockchain
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+    
+        // Get the signer (the user)
+        const signer = provider.getSigner();
+    
+        // Get the user's Ethereum address
+        const address = await signer.getAddress();
+    
+        console.log("Connected address:", address);
+        setwalletadddress(address);
+        // You can now use the signer to sign transactions, send ethers, etc.
+        // Example: const balance = await provider.getBalance(address);
+        // console.log("Balance:", ethers.utils.formatEther(balance));
+      } catch (error) {
+        console.error("Error connecting to wallet:", error);
+        alert("Failed to connect to the wallet.");
+      }
+    };
 
   return (
     <div>
@@ -59,12 +103,21 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="md:flex gap-x-5 items-center">
+
+                {walletadddress?<BtnMain
+                  text={walletadddress.slice(0, 10)+".."}
+                  icon={<div />}
+                  className="md:flex hidden bg-yellow-500 hover:bg-yellow-600 text-gray-900"
+                  onClick={handleClick}
+                />:
                 <BtnMain
-                  text="List NFT"
-                  icon={<AiOutlinePlus className="text-2xl" />}
+                  text="Connect wallet"
+                  icon={<div />}
                   className="md:flex hidden bg-yellow-500 hover:bg-yellow-600 text-gray-900"
                   onClick={handleClick}
                 />
+                
+                }
                 <div className="md:hidden transition-all mr-3 my-3 cursor-pointer hover:text-gray-200">
                   {isMobileNavOpen ? (
                     <AiOutlineMenuFold
@@ -116,12 +169,21 @@ export default function Navbar() {
                     </a>
                   </Link>
                 ))}
+
+                {walletadddress?<BtnMain
+                  text={walletadddress.slice(0,10)+".."}
+                  icon={<div />}
+                  className="md:flex hidden bg-yellow-500 hover:bg-yellow-600 text-gray-900"
+                  onClick={handleClick}
+                />:
+                
                 <BtnMain
-                  text="List NFT"
-                  icon={<AiOutlinePlus className="text-2xl" />}
+                  text="Connect wallet"
+                  icon={<div />}
                   className="w-full !rounded-full bg-yellow-500 hover:bg-yellow-600 text-gray-900"
                   onClick={handleClick}
                 />
+                }
               </div>
             </div>
           </div>

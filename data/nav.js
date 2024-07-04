@@ -2,11 +2,11 @@ import {TbLayoutDashboard} from 'react-icons/tb'
 import {HiTemplate} from 'react-icons/hi'
 import {GiSellCard} from 'react-icons/gi'
 import {BiTrendingUp} from 'react-icons/bi'
-import {AiFillCrown} from 'react-icons/ai'
+import {AiFillCrown,AiOutlinePlus} from 'react-icons/ai'
 
 export const navLinks = [
     {
-        title: "Dashboard",
+        title: "Buy NFT's",
         link: "/",
         icon: <TbLayoutDashboard />
     },
@@ -20,9 +20,15 @@ export const navLinks = [
         link: "/my-items",
         icon: <AiFillCrown />
     },
-    {
-        title: "Creator's Dashboard ",
-        link: "/my-listed-items",
-        icon: <GiSellCard />
-    },
+    
+    //  {
+    //     title: "List an NFT",
+    //     link: "/sell",
+    //     icon: <AiOutlinePlus className="text-2xl" />
+    // },
+    // {
+    //     title: "Creator's Dashboard ",
+    //     link: "/my-listed-items",
+    //     icon: <GiSellCard />
+    // },
 ]

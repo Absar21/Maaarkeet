@@ -134,20 +134,23 @@ import { ethers } from "ethers";
 import {
   nftAddress,
   nftMarketplaceAddress,
-} from "../../../config/networkAddress";
-import NFTAbi from "../../../abi/NFT.json";
-import NFTMarketplaceAbi from "../../../abi/NFTMarketplace.json";
+} from "../../../../config/networkAddress";
+import NFTAbi from "../../../../abi/NFT.json";
+import NFTMarketplaceAbi from "../../../../abi/NFTMarketplace.json";
 import axios from "axios";
 import Web3Modal from "web3modal";
 import { useRouter } from "next/router";
-import BtnMain from "../../../subcomponents/btns/BtnMain";
+import BtnMain from "../../../../subcomponents/btns/BtnMain";
 import { AiOutlineArrowRight, AiOutlineArrowUp } from "react-icons/ai";
-import NftInfo from "../../../components/nft-info/NftInfo";
-import Input from "../../../subcomponents/inputs/Input";
+import NftInfo from "../../../../components/nft-info/NftInfo";
+import Input from "../../../../subcomponents/inputs/Input";
 
 export default function MyItemId() {
   const router = useRouter();
   let { itemid } = router.query;
+  // router.query.itemid
+  let { nftid } = router.query;
+
 
   const [loading, setLoading] = useState(false);
   const [nftData, setNftData] = useState();
@@ -157,26 +160,30 @@ export default function MyItemId() {
 
   const loadNFT = async () => {
     setLoading(true);
-    const provider = new ethers.providers.JsonRpcProvider();
-    const nftContract = new ethers.Contract(nftAddress, NFTAbi.abi, provider);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    
     const nftMarketPlaceContract = new ethers.Contract(
       nftMarketplaceAddress,
-      NFTMarketplaceAbi.abi,
+      NFTMarketplaceAbi,
       provider
     );
     const data = await nftMarketPlaceContract.getPerticularItem(
       router.query.itemid
     );
-    console.log(data);
+    console.log("data",data);
 
     const allData = async () => {
       let convertedPrice = ethers.utils.formatUnits(
         data.price.toString(),
         "ether"
       );
-      const tokenUri = await nftContract.tokenURI(data.tokenId);
+      const nftContract = new ethers.Contract(nftid, NFTAbi, provider);
+      const tokenUri = await nftContract.tokenURI(itemid);
       const metaData = await axios.get(tokenUri);
       let item = {
+
         price: convertedPrice,
         tokenId: data.tokenId.toNumber(),
         seller: data.seller,
@@ -192,15 +199,14 @@ export default function MyItemId() {
     setLoading(false);
   };
 
-  const resellNFT = async (price, tokenId) => {
-    const web3Modal = new Web3Modal();
-    const connection = await web3Modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
+  const resellNFT = async (price) => {
+   
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
 
     const signer = provider.getSigner();
     const nftMarketPlaceContract = new ethers.Contract(
       nftMarketplaceAddress,
-      NFTMarketplaceAbi.abi,
+      NFTMarketplaceAbi,
       signer
     );
 
@@ -208,17 +214,21 @@ export default function MyItemId() {
 
     let listingPrice = await nftMarketPlaceContract.getListingPrice();
     listingPrice = await listingPrice.toString();
-
+    console.log("datatata", ethers.utils.getAddress(nftid),
+    itemid,
+    convertedPrice,)
     const transaction = await nftMarketPlaceContract.resellItem(
-      nftAddress,
-      tokenId,
+      ethers.utils.getAddress(nftid),
+      ethers.BigNumber.from(itemid),
       convertedPrice,
       {
         value: listingPrice,
+        gasLimit: ethers.utils.hexlify(7000000)
       }
     );
     await transaction.wait();
-    await router.push("/my-listed-items");
+    await router.push("/");
+    
   };
 
   useEffect(() => {
