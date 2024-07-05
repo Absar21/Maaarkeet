@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from "../components/layouts/MainLayout";
 import Heading2 from "../subcomponents/headings/Heading2";
 import { ethers } from 'ethers';
+import {  nftMarketplaceAddress } from "/config/networkAddress";
+import NFTMarketplaceAbi from "/abi/NFTMarketplace.json";
 
 function yournftpage() {
   const [nftId, setNftId] = useState('');
@@ -29,12 +31,28 @@ function yournftpage() {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log('NFT ID:', nftId);
     console.log('New Price:', newPrice);
     // Reset form fields
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    
+    if ( address.toLowerCase() === userWalletAddress.toLowerCase()) {
+      
+
+      const nftMarketPlaceContract = new ethers.Contract(nftMarketplaceAddress, NFTMarketplaceAbi, signer);
+      let convertedPrice = ethers.utils.parseEther(newPrice);
+
+      let ddata=await nftMarketPlaceContract.setListingPrice(convertedPrice)
+      ddata.wait()
+      alert("listing price changed successfully")
+
+
+    } 
     setNftId('');
     setNewPrice('');
   };
@@ -46,7 +64,7 @@ function yournftpage() {
         <h3 className="text-xl font-bold mb-4">Change Listing Price</h3>
         {hasWallet ? (
           <form onSubmit={handleFormSubmit} className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label htmlFor="nftId" className="block text-gray-700 mb-2">
                 NFT ID
               </label>
@@ -58,7 +76,7 @@ function yournftpage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                 required
               />
-            </div>
+            </div> */}
             <div className="mb-4">
               <label htmlFor="newPrice" className="block text-gray-700 mb-2">
                 New Price
@@ -67,8 +85,8 @@ function yournftpage() {
                 type="text"
                 id="newPrice"
                 value={newPrice}
-                onChange={(e) => setNewPrice(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                onChange={(e) => {setNewPrice(e.target.value)}}
+                className="text-gray-500 w-full px-3 py-2 border border-gray-300 rounded-lg"
                 required
               />
             </div>
@@ -80,7 +98,7 @@ function yournftpage() {
             </button>
           </form>
         ) : (
-          <p className="text-red-500">Only Admin has access this feature.</p>
+          <p className="text-red-500">Only Admin has access to this page.</p>
         )}
       </div>
     </MainLayout>
