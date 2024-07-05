@@ -250,7 +250,7 @@ export default function Navbar() {
   };
 
   const isUserAddressAllowed = () => {
-    return walletAddress === '0x349EF1522ab7A5B288237b98c2fE4EDD1a89F07e';
+    return walletAddress == '0xae133222F345456a613Ba0B726E6308Bb7A0b34E';
   };
 
   return (
