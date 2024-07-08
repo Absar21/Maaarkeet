@@ -75,7 +75,7 @@
 //                 <span className="px-2 mr-2 md:border-r border-gray-700 flex items-center">
 //                   {/* Adjusted width and height of the Image component */}
 //                   <Image
-//                     src="/dark-grey-background-designify (1).png" // Adjust the path according to your actual image location
+//                     src="/chadcatlogo.png" // Adjust the path according to your actual image location
 //                     alt="alt placeholder"
 //                     width={300} // Adjust width as needed
 //                     height={80} // Adjust height as needed
@@ -145,7 +145,7 @@
 //             <div className="py-[.5px] w-64">
 //               <div className="w-full py-4 space-y-6 px-2 text-gray-900 bg-gray-800 rounded-lg min-h-screen text-left capitalize font-medium shadow-lg">
 //                 <img
-//                   src="/dark-grey-background-designify (1).png"
+//                   src="/chadcatlogo.png"
 //                   alt="alt placeholder"
 //                   width={300} // Adjust width as needed
 //                   height={80} // Adjust height as needed
@@ -215,7 +215,7 @@ export default function Navbar() {
       try {
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0xaa36a7' }], // Chain ID for Sepolia
+          params: [{ chainId: '0x38' }], // Chain ID for Sepolia
         });
         await window.ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -250,7 +250,7 @@ export default function Navbar() {
   };
 
   const isUserAddressAllowed = () => {
-    return walletAddress == '0xae133222F345456a613Ba0B726E6308Bb7A0b34E';
+    return walletAddress == '0x0d3FbFCa8d6Fc952c6ea37BC29a456f2a011853f';
   };
 
   return (
@@ -262,7 +262,7 @@ export default function Navbar() {
               <div className="flex items-center">
                 <span className="px-2 mr-2 md:border-r border-gray-700 flex items-center">
                   <Image
-                    src="/dark-grey-background-designify (1).png"
+                    src="/chadcatlogo.png"
                     alt="alt placeholder"
                     width={300}
                     height={80}
@@ -341,7 +341,7 @@ export default function Navbar() {
             <div className="py-[.5px] w-64">
               <div className="w-full py-4 space-y-6 px-2 text-gray-900 bg-gray-800 rounded-lg min-h-screen text-left capitalize font-medium shadow-lg">
                 <Image
-                  src="/dark-grey-background-designify (1).png"
+                  src="/chadcatlogo.png"
                   alt="alt placeholder"
                   width={300}
                   height={80}

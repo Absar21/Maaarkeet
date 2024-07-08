@@ -11,8 +11,8 @@ function yournftpage() {
   const [hasWallet, setHasWallet] = useState(false);
 
   // Wallet address to check against
-  const userWalletAddress = '0xae133222F345456a613Ba0B726E6308Bb7A0b34E';
-
+  const userWalletAddress = '0x0d3FbFCa8d6Fc952c6ea37BC29a456f2a011853f';
+  
   useEffect(() => {
     checkWallet();
   }, []);

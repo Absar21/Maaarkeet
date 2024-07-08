@@ -20,7 +20,7 @@ export default function CreateContract() {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider.getSigner();
 
-      const contractAddress = '0xCfde34B6f0c8b7F36b0e37Fb39daf9ddA5F46B3e'; // Ensure this is the correct contract address
+      const contractAddress = '0x88DC96e5B60E0b9a0935450853334FAf31a1d4E1'; // Ensure this is the correct contract address
 
       if (!NFTMarketplaceAbi) {
         throw new Error('ABI is not defined correctly. Please check the ABI file.');
