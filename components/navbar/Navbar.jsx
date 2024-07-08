@@ -75,8 +75,8 @@
 //                 <span className="px-2 mr-2 md:border-r border-gray-700 flex items-center">
 //                   {/* Adjusted width and height of the Image component */}
 //                   <Image
-//                     src="/chadcatlogo.png" // Adjust the path according to your actual image location
-//                     alt="alt placeholder"
+//                     src="/chadcatlogo1.png" // Adjust the path according to your actual image location
+//                     alt="chadcat"
 //                     width={300} // Adjust width as needed
 //                     height={80} // Adjust height as needed
 //                     className="inline-block"
@@ -145,8 +145,8 @@
 //             <div className="py-[.5px] w-64">
 //               <div className="w-full py-4 space-y-6 px-2 text-gray-900 bg-gray-800 rounded-lg min-h-screen text-left capitalize font-medium shadow-lg">
 //                 <img
-//                   src="/chadcatlogo.png"
-//                   alt="alt placeholder"
+//                   src="/chadcatlogo1.png"
+//                   alt="chadcat"
 //                   width={300} // Adjust width as needed
 //                   height={80} // Adjust height as needed
 //                   className="inline-block"
@@ -262,8 +262,8 @@ export default function Navbar() {
               <div className="flex items-center">
                 <span className="px-2 mr-2 md:border-r border-gray-700 flex items-center">
                   <Image
-                    src="/chadcatlogo.png"
-                    alt="alt placeholder"
+                    src="/chadcatlogo1.png"
+                    alt="chadcat"
                     width={300}
                     height={80}
                     className="inline-block"
@@ -341,8 +341,8 @@ export default function Navbar() {
             <div className="py-[.5px] w-64">
               <div className="w-full py-4 space-y-6 px-2 text-gray-900 bg-gray-800 rounded-lg min-h-screen text-left capitalize font-medium shadow-lg">
                 <Image
-                  src="/chadcatlogo.png"
-                  alt="alt placeholder"
+                  src="/chadcatlogo1.png"
+                  alt="chadcat"
                   width={300}
                   height={80}
                   className="inline-block"
