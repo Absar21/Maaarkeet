@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import {  nftMarketplaceAddress } from "/config/networkAddress";
 import NFTMarketplaceAbi from "/abi/NFTMarketplace.json";
 
-function yournftpage() {
+function YourNftPage() {
   const [nftId, setNftId] = useState('');
   const [newPrice, setNewPrice] = useState('');
   const [hasWallet, setHasWallet] = useState(false);
@@ -105,4 +105,4 @@ function yournftpage() {
   );
 }
 
-export default yournftpage;
+export default YourNftPage;
